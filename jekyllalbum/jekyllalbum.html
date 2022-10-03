@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>jekyllalbum module &mdash; Jekyll album  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Jekyll album
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">jekyllalbum module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Jekyll album</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>jekyllalbum module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/jekyllalbum.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="module-jekyllalbum">
+<span id="jekyllalbum-module"></span><h1>jekyllalbum module<a class="headerlink" href="#module-jekyllalbum" title="Permalink to this heading">¶</a></h1>
+<p>Created on 5 Jul 2020</p>
+<p>Modified 29 Sep 2022</p>
+<p>&#64;author: thomasgumbricht</p>
+<p class="rubric">Notes</p>
+<p>The module jekyllalbum.py:</p>
+<blockquote>
+<div><p>requires that you have ImageMagick setup for your machine, that you have the SoSSImple (v 2) Jekyll theme
+a json file for parameters linking to a txt file listing the photos to import.</p>
+<p>The script takes 2 string parameters as input:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>docpath: the full path to a folder that must contain the txt file as given by the “projFN” parameter</p></li>
+<li><p>projFN: the name of an existing txt files that sequentially lists json parameter files to run</p></li>
+</ul>
+</div></blockquote>
+<p>The individual parameter files (listed in “projFN”) must have approximately 40 parameters
+in a precise nested json structure with dictionaries and lists.
+You can create a template json parameter file by running “def CreateParamJson” (just uncomment under “def SetupProcesses”,
+this creates a template json parameter file called “jekyll_album_4_Jekyll-theme_SoSimple.json” in the
+path given as the parameter “docpath”.</p>
+<p>The script first run the stand alone “def SetupProcesses” that reads the txt file “projFN” and
+then sequentialy run the json parameter files listed.</p>
+<p>Each allbum creation (i.e. each json parameter file) is run as a sequence of commands:</p>
+<ul class="simple">
+<li><p>JekyllYaml: creates the markdown yaml header</p></li>
+<li><dl class="simple">
+<dt>FigClass: processes the listed images using ImageMagick</dt><dd><ul>
+<li><p>MagickConvertFull: convert images using ImageMagick</p></li>
+<li><p>MagickConvertPage: reduced resolution images from MagickConvertFull if requested</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>WritePost: Write the makrdown ffor the Jekyll theme soSimple (v2).</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Functions:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jekyllalbum.CreateParamJson" title="jekyllalbum.CreateParamJson"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CreateParamJson</span></code></a>(docpath)</p></td>
+<td><p>Create the default json parameters file structure, only to create template if lacking</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jekyllalbum.FigClass" title="jekyllalbum.FigClass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FigClass</span></code></a>(pD, jsonFPN)</p></td>
+<td><p>Process figures (images, photos) using ImageMagick</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jekyllalbum.GetImageMeta" title="jekyllalbum.GetImageMeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GetImageMeta</span></code></a>(srcImageFPN, dstJsonMetaFPN)</p></td>
+<td><p>Retrieve image exifdata (metadata) using PIL, write to json file and return</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jekyllalbum.JekyllAlbumJson" title="jekyllalbum.JekyllAlbumJson"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JekyllAlbumJson</span></code></a>()</p></td>
+<td><p>Create a template dictionary for parametising this script</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jekyllalbum.JekyllYaml" title="jekyllalbum.JekyllYaml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JekyllYaml</span></code></a>(pD)</p></td>
+<td><p>Build the Jekyll album Yaml header</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jekyllalbum.MagickConvertFull" title="jekyllalbum.MagickConvertFull"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MagickConvertFull</span></code></a>(pD, srcImageFPN, ...)</p></td>
+<td><p>Process image source using ImageMAgick and save to destination path(s)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jekyllalbum.MagickConvertPage" title="jekyllalbum.MagickConvertPage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MagickConvertPage</span></code></a>(pD, dstFullFPN, dstPageFPN)</p></td>
+<td><p>ImageMagick reduction of size and quality of the destination image to a smaller, in-page image</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jekyllalbum.PilotJekyllAlbum" title="jekyllalbum.PilotJekyllAlbum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PilotJekyllAlbum</span></code></a>(jsonFPN)</p></td>
+<td><p>Create Jekyll photo album from json command file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jekyllalbum.SetupProcesses" title="jekyllalbum.SetupProcesses"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SetupProcesses</span></code></a>(docpath, projFN)</p></td>
+<td><p>Setup and loop processes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jekyllalbum.WritePost" title="jekyllalbum.WritePost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WritePost</span></code></a>(pD, jsonFPN, yamlL, bodyL)</p></td>
+<td><p>Write the album post as a markdown file</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.CreateParamJson">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">CreateParamJson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#CreateParamJson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.CreateParamJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the default json parameters file structure, only to create template if lacking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docpath</strong> (<em>str</em>) – directory path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.FigClass">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">FigClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonFPN</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#FigClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.FigClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process figures (images, photos) using ImageMagick</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pD</strong> (<em>dict</em>) – parameters for creating jekyll album</p></li>
+<li><p><strong>jsonFPN</strong> (<em>str</em>) – path to json parameter file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return bodyL<span class="colon">:</span></dt>
+<dd class="field-even"><p>markdown body text</p>
+</dd>
+<dt class="field-odd">Rtype bodyL<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.GetImageMeta">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">GetImageMeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcImageFPN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstJsonMetaFPN</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#GetImageMeta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.GetImageMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve image exifdata (metadata) using PIL, write to json file and return</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>srcImageFPN</strong> (<em>str</em>) – path to image source file</p></li>
+<li><p><strong>dstJsonMetaFPN</strong> (<em>str</em>) – path to destination metadata file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>meatadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.JekyllAlbumJson">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">JekyllAlbumJson</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#JekyllAlbumJson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.JekyllAlbumJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a template dictionary for parametising this script</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>template parameters</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.JekyllYaml">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">JekyllYaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#JekyllYaml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.JekyllYaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the Jekyll album Yaml header</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pD</strong> (<em>dict</em>) – album parameters</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>yaml header</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.MagickConvertFull">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">MagickConvertFull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srcImageFPN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstFullFPN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tempFPN</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#MagickConvertFull"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.MagickConvertFull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process image source using ImageMAgick and save to destination path(s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pD</strong> (<em>dict</em>) – process parameters</p></li>
+<li><p><strong>srcImageFPN</strong> (<em>str</em>) – path to the source image</p></li>
+<li><p><strong>dstFullFPN</strong> (<em>str</em>) – path to larger (url-linked) destination image</p></li>
+<li><p><strong>tempFPN</strong> (<em>str</em>) – path to temporary image file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.MagickConvertPage">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">MagickConvertPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstFullFPN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstPageFPN</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#MagickConvertPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.MagickConvertPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>ImageMagick reduction of size and quality of the destination image to a smaller, in-page image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pD</strong> (<em>dict</em>) – process parameters</p></li>
+<li><p><strong>dstFullFPN</strong> (<em>str</em>) – path to larger, existing (url-linked) destination image</p></li>
+<li><p><strong>dstPageFPN</strong> (<em>str</em>) – path to smaller (in-page) destination image</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.PilotJekyllAlbum">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">PilotJekyllAlbum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jsonFPN</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#PilotJekyllAlbum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.PilotJekyllAlbum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Jekyll photo album from json command file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>jsonFPN</strong> – path to xml file
+:type jsonFPN: str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.SetupProcesses">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">SetupProcesses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projFN</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#SetupProcesses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.SetupProcesses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup and loop processes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramn docpath<span class="colon">:</span></dt>
+<dd class="field-odd"><p>path to text file</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>lstr</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>projFN</strong> – project filename</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jekyllalbum.WritePost">
+<span class="sig-prename descclassname"><span class="pre">jekyllalbum.</span></span><span class="sig-name descname"><span class="pre">WritePost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonFPN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yamlL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bodyL</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jekyllalbum.html#WritePost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jekyllalbum.WritePost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the album post as a markdown file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pD</strong> (<em>list</em>) – parameters for creating jekyll album</p></li>
+<li><p><strong>jsonFPN</strong> (<em>str</em>) – path to json parameter file</p></li>
+<li><p><strong>yamlL</strong> – markdown yaml text lines</p></li>
+<li><p><strong>bodyL</strong> (<em>list</em>) – markdown body text lines</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Thomas Gumbricht
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

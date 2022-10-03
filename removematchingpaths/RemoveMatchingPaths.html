@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>RemoveMatchingPaths module &mdash; Remove Matching Paths  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Remove Matching Paths
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">RemoveMatchingPaths module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Remove Matching Paths</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>RemoveMatchingPaths module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/RemoveMatchingPaths.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="module-RemoveMatchingPaths">
+<span id="removematchingpaths-module"></span><h1>RemoveMatchingPaths module<a class="headerlink" href="#module-RemoveMatchingPaths" title="Permalink to this heading">¶</a></h1>
+<p>Created on 10 Sep. 2019</p>
+<p>updated 11 Jun 2020</p>
+<p>updated 3 Oct 2020</p>
+<p>&#64;author: thomasgumbricht</p>
+<p><strong>Functions:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#RemoveMatchingPaths.CreateParamJson" title="RemoveMatchingPaths.CreateParamJson"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CreateParamJson</span></code></a>(docpath)</p></td>
+<td><p>Create the default json parameters file structure, only to create template if lacking</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#RemoveMatchingPaths.Hashfile" title="RemoveMatchingPaths.Hashfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hashfile</span></code></a>(path[, blocksize])</p></td>
+<td><p>Calculate hash for file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#RemoveMatchingPaths.LoopMatchingPaths" title="RemoveMatchingPaths.LoopMatchingPaths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoopMatchingPaths</span></code></a>(mainFP, examFPL, ...)</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param str mainFP<span class="colon">:</span></dt>
+<dd class="field-odd"><p>root folder path for main directory to keep</p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#RemoveMatchingPaths.ReadRemoveMatchingPathsJson" title="RemoveMatchingPaths.ReadRemoveMatchingPathsJson"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReadRemoveMatchingPathsJson</span></code></a>(jsonFPN)</p></td>
+<td><p>Read the parameters for remving matching paths</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#RemoveMatchingPaths.RemoveEmptyFolders" title="RemoveMatchingPaths.RemoveEmptyFolders"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RemoveEmptyFolders</span></code></a>(path)</p></td>
+<td><p>Remove empty directories</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#RemoveMatchingPaths.RemoveMatchingPaths" title="RemoveMatchingPaths.RemoveMatchingPaths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RemoveMatchingPaths</span></code></a>(mainpath, exampath[, ...])</p></td>
+<td><p>Search ad delete matching files and subfolders</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#RemoveMatchingPaths.RemoveMatchingPathsParams" title="RemoveMatchingPaths.RemoveMatchingPathsParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RemoveMatchingPathsParams</span></code></a>()</p></td>
+<td><p>Default parameters for removing duplicates in matching paths</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#RemoveMatchingPaths.SetupProcesses" title="RemoveMatchingPaths.SetupProcesses"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SetupProcesses</span></code></a>(docpath, projFN)</p></td>
+<td><p>Setup and loop processes</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="RemoveMatchingPaths.CreateParamJson">
+<span class="sig-prename descclassname"><span class="pre">RemoveMatchingPaths.</span></span><span class="sig-name descname"><span class="pre">CreateParamJson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RemoveMatchingPaths.html#CreateParamJson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RemoveMatchingPaths.CreateParamJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the default json parameters file structure, only to create template if lacking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docpath</strong> (<em>str</em>) – directory path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RemoveMatchingPaths.Hashfile">
+<span class="sig-prename descclassname"><span class="pre">RemoveMatchingPaths.</span></span><span class="sig-name descname"><span class="pre">Hashfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blocksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65536</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RemoveMatchingPaths.html#Hashfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RemoveMatchingPaths.Hashfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate hash for file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – file path</p></li>
+<li><p><strong>blocksize</strong> (<em>int</em>) – blocksize to use when reading file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>hex-encoded string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RemoveMatchingPaths.LoopMatchingPaths">
+<span class="sig-prename descclassname"><span class="pre">RemoveMatchingPaths.</span></span><span class="sig-name descname"><span class="pre">LoopMatchingPaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainFP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">examFPL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeHidden</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeDSstore</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeAllDupl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeRoot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeSmallerOlder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deleleExtL</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RemoveMatchingPaths.html#LoopMatchingPaths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RemoveMatchingPaths.LoopMatchingPaths" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mainFP</strong> (<em>str</em>) – root folder path for main directory to keep</p></li>
+<li><p><strong>examFPL</strong> (<em>list</em>) – root folder paths for examination directory to clean</p></li>
+<li><p><strong>removeHidden</strong> (<em>bool</em>) – Remove duplicates of hidden files</p></li>
+<li><p><strong>removeDSstore</strong> (<em>bool</em>) – Remove duplicates of .DSstore (macOS)</p></li>
+<li><p><strong>removeAllDupl</strong> (<em>bool</em>) – remove file if full path is identical, disregarding md5 hash</p></li>
+<li><p><strong>removeSmallerOlder</strong> (<em>bool</em>) – remove file if full path is identical and examined copy is smaller and older</p></li>
+<li><p><strong>deleleExtL</strong> (<em>list</em>) – List of file extensions to delete; if list == [‘*’] all identified copies are deleted</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RemoveMatchingPaths.ReadRemoveMatchingPathsJson">
+<span class="sig-prename descclassname"><span class="pre">RemoveMatchingPaths.</span></span><span class="sig-name descname"><span class="pre">ReadRemoveMatchingPathsJson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jsonFPN</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RemoveMatchingPaths.html#ReadRemoveMatchingPathsJson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RemoveMatchingPaths.ReadRemoveMatchingPathsJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the parameters for remving matching paths</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>jsonFPN</strong> (<em>str</em>) – path to json file</p>
+</dd>
+<dt class="field-even">Return paramD<span class="colon">:</span></dt>
+<dd class="field-even"><p>parameters</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RemoveMatchingPaths.RemoveEmptyFolders">
+<span class="sig-prename descclassname"><span class="pre">RemoveMatchingPaths.</span></span><span class="sig-name descname"><span class="pre">RemoveEmptyFolders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RemoveMatchingPaths.html#RemoveEmptyFolders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RemoveMatchingPaths.RemoveEmptyFolders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove empty directories</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – folder path to check if empty and remove</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RemoveMatchingPaths.RemoveMatchingPaths">
+<span class="sig-prename descclassname"><span class="pre">RemoveMatchingPaths.</span></span><span class="sig-name descname"><span class="pre">RemoveMatchingPaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainpath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exampath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeHidden</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeDSstore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeAllDupl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeSmallerOlder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deleleExtL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RemoveMatchingPaths.html#RemoveMatchingPaths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RemoveMatchingPaths.RemoveMatchingPaths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search ad delete matching files and subfolders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mainpath</strong> (<em>str</em>) – root folder path for main directory to keep</p></li>
+<li><p><strong>exampath</strong> (<em>str</em>) – root folder path for examination directory to clean</p></li>
+<li><p><strong>removeHidden</strong> (<em>bool</em>) – Remove duplicates of hidden files</p></li>
+<li><p><strong>removeDSstore</strong> (<em>bool</em>) – Remove duplicates of .DSstore (macOS)</p></li>
+<li><p><strong>removeAllDupl</strong> (<em>bool</em>) – remove file if full path is identical, disregarding md5 hash</p></li>
+<li><p><strong>removeSmallerOlder</strong> (<em>bool</em>) – remove file if full path is identical and examined copy is smaller and older</p></li>
+<li><p><strong>deleleExtL</strong> (<em>list</em>) – List of file extensions to delete; if list == [‘*’] all identified copies are deleted</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RemoveMatchingPaths.RemoveMatchingPathsParams">
+<span class="sig-prename descclassname"><span class="pre">RemoveMatchingPaths.</span></span><span class="sig-name descname"><span class="pre">RemoveMatchingPathsParams</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RemoveMatchingPaths.html#RemoveMatchingPathsParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RemoveMatchingPaths.RemoveMatchingPathsParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default parameters for removing duplicates in matching paths</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>parameter dictionary</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RemoveMatchingPaths.SetupProcesses">
+<span class="sig-prename descclassname"><span class="pre">RemoveMatchingPaths.</span></span><span class="sig-name descname"><span class="pre">SetupProcesses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projFN</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RemoveMatchingPaths.html#SetupProcesses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RemoveMatchingPaths.SetupProcesses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup and loop processes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramn docpath<span class="colon">:</span></dt>
+<dd class="field-odd"><p>path to text file</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>lstr</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>projFN</strong> – project filename</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Thomas Gumbricht
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

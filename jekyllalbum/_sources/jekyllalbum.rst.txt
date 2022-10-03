@@ -1,0 +1,7 @@
+jekyllalbum module
+==================
+
+.. automodule:: jekyllalbum
+   :members:
+   :undoc-members:
+   :show-inheritance:

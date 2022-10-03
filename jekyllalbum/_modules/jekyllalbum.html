@@ -1,0 +1,848 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>jekyllalbum &mdash; Jekyll album  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Jekyll album
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Jekyll album</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>jekyllalbum</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for jekyllalbum</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on 5 Jul 2020</span>
+
+<span class="sd">Modified 29 Sep 2022</span>
+
+<span class="sd">@author: thomasgumbricht</span>
+
+<span class="sd">Notes</span>
+<span class="sd">-----</span>
+<span class="sd">The module jekyllalbum.py:</span>
+
+<span class="sd">    requires that you have ImageMagick setup for your machine, that you have the SoSSImple (v 2) Jekyll theme</span>
+<span class="sd">    a json file for parameters linking to a txt file listing the photos to import. </span>
+<span class="sd">     </span>
+<span class="sd">    The script takes 2 string parameters as input:</span>
+<span class="sd">    </span>
+<span class="sd">        - docpath: the full path to a folder that must contain the txt file as given by the &quot;projFN&quot; parameter</span>
+<span class="sd">        - projFN: the name of an existing txt files that sequentially lists json parameter files to run</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    The individual parameter files (listed in &quot;projFN&quot;) must have approximately 40 parameters </span>
+<span class="sd">    in a precise nested json structure with dictionaries and lists.</span>
+<span class="sd">    You can create a template json parameter file by running &quot;def CreateParamJson&quot; (just uncomment under &quot;def SetupProcesses&quot;,</span>
+<span class="sd">    this creates a template json parameter file called &quot;jekyll_album_4_Jekyll-theme_SoSimple.json&quot; in the </span>
+<span class="sd">    path given as the parameter &quot;docpath&quot;.</span>
+<span class="sd">    </span>
+<span class="sd">    The script first run the stand alone &quot;def SetupProcesses&quot; that reads the txt file &quot;projFN&quot; and </span>
+<span class="sd">    then sequentialy run the json parameter files listed. </span>
+<span class="sd">    </span>
+<span class="sd">    Each allbum creation (i.e. each json parameter file) is run as a sequence of commands:</span>
+<span class="sd">    </span>
+<span class="sd">    - JekyllYaml: creates the markdown yaml header</span>
+<span class="sd">    - FigClass: processes the listed images using ImageMagick</span>
+<span class="sd">        - MagickConvertFull: convert images using ImageMagick</span>
+<span class="sd">        - MagickConvertPage: reduced resolution images from MagickConvertFull if requested</span>
+<span class="sd">    - WritePost: Write the makrdown ffor the Jekyll theme soSimple (v2).</span>
+<span class="sd">            </span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># Standard library imports</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="c1"># Third party imports</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">PIL.ExifTags</span> <span class="kn">import</span> <span class="n">TAGS</span>
+
+<div class="viewcode-block" id="JekyllAlbumJson"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.JekyllAlbumJson">[docs]</a><span class="k">def</span> <span class="nf">JekyllAlbumJson</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Create a template dictionary for parametising this script</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">        :returns: template parameters </span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">paramD</span> <span class="o">=</span>     <span class="p">{</span>
+      <span class="s2">&quot;overwrite&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+      <span class="s2">&quot;media&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;srcfp&quot;</span><span class="p">:</span> <span class="s2">&quot;path/to/image/library&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;listfn&quot;</span><span class="p">:</span> <span class="s2">&quot;album.txt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;labelsfn&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;magickfn&quot;</span><span class="p">:</span> <span class="kc">False</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;urlimages&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;xdim&quot;</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span>
+        <span class="s2">&quot;ydim&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quality&quot;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+        <span class="s2">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;inpageimages&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;xdim&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+        <span class="s2">&quot;ydim&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quality&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s2">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;s&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;imagemagick&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;convert&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;-auto-gamma&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dissolve&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+        <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;emboss&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;watermark&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;-font&quot;</span><span class="p">:</span> <span class="s2">&quot;Arial&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;-pointsize&quot;</span><span class="p">:</span> <span class="s2">&quot;250&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;-gravity&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;-draw&quot;</span><span class="p">:</span> <span class="s2">&quot;fill &#39;RGBA(32,32,64,0.25)&#39; text 2,2 &#39;KARTTUR&#39; fill &#39;RGBA(255,255,255,0.25)&#39; text -2,-2 &#39;EMBOSS&#39; fill grey text 0,0 &#39;EMBOSS&#39; &quot;</span><span class="p">,</span>
+          <span class="s2">&quot;-transparent&quot;</span><span class="p">:</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;-fuzz&quot;</span><span class="p">:</span> <span class="s2">&quot;90%&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Author Name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;YYYYMMDD&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;country&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="s2">&quot;Placename(s)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;movemode&quot;</span><span class="p">:</span> <span class="s2">&quot;foot&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="mf">18.080822</span><span class="p">,</span>
+        <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="mf">59.374705</span><span class="p">,</span>
+        <span class="s2">&quot;elev&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">999</span><span class="p">,</span>
+        <span class="s2">&quot;yaw&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;pitch&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;roll&quot;</span><span class="p">:</span> <span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;rolltitle&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;figcaption&quot;</span><span class="p">:</span> <span class="s2">&quot;figure cpation. &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;short desicription.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;persons&quot;</span><span class="p">:</span> <span class="p">[</span>
+          <span class="s2">&quot;N N&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;M M&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;keywords&quot;</span><span class="p">:</span> <span class="p">[</span>
+          <span class="s2">&quot;key1&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;key2&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;key3&quot;</span>
+        <span class="p">]</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;publication&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;quality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;public&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;paltyp&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;figclass&quot;</span><span class="p">:</span> <span class="s2">&quot;third&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;layout&quot;</span><span class="p">:</span> <span class="s2">&quot;post&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="s2">&quot;existing category in you SoSimple structure&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dstfp&quot;</span><span class="p">:</span> <span class="s2">&quot;destination folder of your local SoSimple setup&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">paramD</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CreateParamJson"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.CreateParamJson">[docs]</a><span class="k">def</span> <span class="nf">CreateParamJson</span><span class="p">(</span><span class="n">docpath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create the default json parameters file structure, only to create template if lacking</span>
+<span class="sd">    </span>
+<span class="sd">        :param str docpath: directory path   </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Get the default params</span>
+    <span class="n">paramD</span> <span class="o">=</span> <span class="n">JekyllAlbumJson</span><span class="p">()</span>
+    
+    <span class="c1"># Set the json FPN</span>
+    <span class="n">jsonFPN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docpath</span><span class="p">,</span> <span class="s1">&#39;jekyll_album_4_Jekyll-theme_SoSimple.json&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Dump the paramD as a json object</span>
+    <span class="n">jsonF</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">jsonFPN</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+  
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">paramD</span><span class="p">,</span> <span class="n">jsonF</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+  
+    <span class="n">jsonF</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="JekyllYaml"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.JekyllYaml">[docs]</a><span class="k">def</span> <span class="nf">JekyllYaml</span><span class="p">(</span><span class="n">pD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Build the Jekyll album Yaml header</span>
+<span class="sd">    </span>
+<span class="sd">        :param pD: album parameters</span>
+<span class="sd">        :type pD: dict</span>
+<span class="sd">        </span>
+<span class="sd">        :returns: yaml header </span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">yamlDate</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(y)s</span><span class="s1">-</span><span class="si">%(m)s</span><span class="s1">-</span><span class="si">%(d)s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> 
+                                     <span class="s1">&#39;m&#39;</span><span class="p">:</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span>
+                                     <span class="s1">&#39;d&#39;</span><span class="p">:</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]}</span>
+             
+    <span class="n">yamlL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;---&#39;</span><span class="p">,</span> <span class="s1">&#39;layout: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;publication&#39;</span><span class="p">][</span><span class="s1">&#39;layout&#39;</span><span class="p">],</span> 
+             <span class="s1">&#39;title: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="s1">&#39;rolltitle&#39;</span><span class="p">],</span>
+             <span class="s1">&#39;categories: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;publication&#39;</span><span class="p">][</span><span class="s1">&#39;categories&#39;</span><span class="p">],</span> 
+             <span class="s1">&#39;excerpt: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+             <span class="s1">&#39;tags:&#39;</span><span class="p">]</span>
+             
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="s1">&#39;keywords&#39;</span><span class="p">]:</span>
+    
+        <span class="n">yamlL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; - </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+        
+    <span class="n">yamlL</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span> <span class="p">[</span><span class="s1">&#39;date: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">yamlDate</span><span class="p">,</span> 
+                   <span class="s1">&#39;modified: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">yamlDate</span><span class="p">,</span>
+                    <span class="s1">&#39;comments: true&#39;</span><span class="p">,</span> 
+                    <span class="s1">&#39;share: true&#39;</span><span class="p">,</span> <span class="s1">&#39;---&#39;</span> <span class="p">]</span> <span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">yamlL</span></div>
+
+
+        
+<div class="viewcode-block" id="GetImageMeta"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.GetImageMeta">[docs]</a><span class="k">def</span> <span class="nf">GetImageMeta</span><span class="p">(</span><span class="n">srcImageFPN</span><span class="p">,</span> <span class="n">dstJsonMetaFPN</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Retrieve image exifdata (metadata) using PIL, write to json file and return</span>
+<span class="sd">        </span>
+<span class="sd">        :param srcImageFPN: path to image source file</span>
+<span class="sd">        :type srcImageFPN: str</span>
+<span class="sd">        </span>
+<span class="sd">        :param dstJsonMetaFPN: path to destination metadata file</span>
+<span class="sd">        :type dstJsonMetaFPN: str</span>
+<span class="sd">        </span>
+<span class="sd">        :returns: meatadata </span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">metaD</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">srcImageFPN</span><span class="p">)</span>
+    
+    <span class="n">exifdata</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">getexif</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">tag_id</span> <span class="ow">in</span> <span class="n">exifdata</span><span class="p">:</span>
+                
+        <span class="c1"># get the tag name, instead of human unreadable tag id</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">TAGS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag_id</span><span class="p">,</span> <span class="n">tag_id</span><span class="p">)</span>
+        
+        <span class="n">data</span> <span class="o">=</span> <span class="n">exifdata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag_id</span><span class="p">)</span>
+        
+        <span class="c1"># decode bytes </span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+                                                 
+        <span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+       
+    <span class="n">metaxD</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">metaD</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span> 
+                      
+            <span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span>  <span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                
+                <span class="k">continue</span>   
+            
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span> 
+            
+            <span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">]))</span>
+            
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">],</span> <span class="nb">float</span><span class="p">):</span> 
+            
+            <span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">]))</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            
+            <span class="k">continue</span>
+            
+        <span class="n">metaxD</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">metaD</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+            
+    <span class="n">jsonF</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">dstJsonMetaFPN</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+  
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metaxD</span><span class="p">,</span> <span class="n">jsonF</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+  
+    <span class="n">jsonF</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+    <span class="k">return</span> <span class="n">metaxD</span></div>
+    
+<div class="viewcode-block" id="MagickConvertPage"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.MagickConvertPage">[docs]</a><span class="k">def</span> <span class="nf">MagickConvertPage</span><span class="p">(</span><span class="n">pD</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">,</span> <span class="n">dstPageFPN</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; ImageMagick reduction of size and quality of the destination image to a smaller, in-page image</span>
+<span class="sd">        </span>
+<span class="sd">        :param pD: process parameters</span>
+<span class="sd">        :type pD: dict</span>
+<span class="sd">        </span>
+<span class="sd">        :param dstFullFPN: path to larger, existing (url-linked) destination image</span>
+<span class="sd">        :type dstFullFPN: str</span>
+<span class="sd">    </span>
+<span class="sd">        :param dstPageFPN: path to smaller (in-page) destination image</span>
+<span class="sd">        :type dstPageFPN: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#Here is the conversion</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;xdim&#39;</span><span class="p">])</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;ydim&#39;</span><span class="p">]):</span>
+    
+        <span class="n">resize</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">x</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;xdim&#39;</span><span class="p">],</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;ydim&#39;</span><span class="p">])</span>
+        
+    <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;xdim&#39;</span><span class="p">]):</span>
+    
+        <span class="n">resize</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">x&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;xdim&#39;</span><span class="p">])</span>
+        
+    <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;ydim&#39;</span><span class="p">]):</span>
+    
+        <span class="n">resize</span> <span class="o">=</span> <span class="s1">&#39;x</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;ydim&#39;</span><span class="p">])</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">resize</span> <span class="o">=</span> <span class="kc">False</span>
+        
+    <span class="n">quality</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;quality&#39;</span><span class="p">])</span>
+    
+    <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/convert&#39;</span><span class="p">,</span> <span class="s1">&#39;-resize&#39;</span><span class="p">,</span> <span class="n">resize</span><span class="p">,</span> <span class="s1">&#39;-quality&#39;</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">,</span> <span class="n">dstPageFPN</span><span class="p">]</span>
+    
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmdL</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MagickConvertFull"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.MagickConvertFull">[docs]</a><span class="k">def</span> <span class="nf">MagickConvertFull</span><span class="p">(</span><span class="n">pD</span><span class="p">,</span> <span class="n">srcImageFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">,</span> <span class="n">tempFPN</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Process image source using ImageMAgick and save to destination path(s)</span>
+<span class="sd">    </span>
+<span class="sd">        :param pD: process parameters</span>
+<span class="sd">        :type pD: dict</span>
+<span class="sd">        </span>
+<span class="sd">        :param srcImageFPN: path to the source image</span>
+<span class="sd">        :type srcImageFPN: str</span>
+<span class="sd">        </span>
+<span class="sd">        :param dstFullFPN: path to larger (url-linked) destination image</span>
+<span class="sd">        :type dstFullFPN: str</span>
+<span class="sd">    </span>
+<span class="sd">        :param tempFPN: path to temporary image file</span>
+<span class="sd">        :type tempFPN: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Here is the conversion</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;xdim&#39;</span><span class="p">])</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;ydim&#39;</span><span class="p">]):</span>
+    
+        <span class="n">resize</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">x</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;xdim&#39;</span><span class="p">],</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;ydim&#39;</span><span class="p">])</span>
+        
+    <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;xdim&#39;</span><span class="p">]):</span>
+    
+        <span class="n">resize</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">x&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;xdim&#39;</span><span class="p">])</span>
+        
+    <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;ydim&#39;</span><span class="p">]):</span>
+    
+        <span class="n">resize</span> <span class="o">=</span> <span class="s1">&#39;x</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;ydim&#39;</span><span class="p">])</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">resize</span> <span class="o">=</span> <span class="kc">False</span>
+        
+    <span class="n">quality</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;quality&#39;</span><span class="p">])</span>
+        
+    <span class="k">if</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">]:</span>
+        
+        <span class="n">convertCmd</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">][</span><span class="s1">&#39;convert&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">convertCmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">convertCmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">)</span>
+    
+        <span class="n">convertCmd</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">convertCmd</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">convertCmd</span> <span class="o">=</span> <span class="kc">False</span>
+        
+    <span class="k">if</span> <span class="n">resize</span><span class="p">:</span> 
+        
+        <span class="k">if</span> <span class="n">convertCmd</span><span class="p">:</span>
+            
+            <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/convert&#39;</span><span class="p">,</span> <span class="s1">&#39;-resize&#39;</span><span class="p">,</span> <span class="n">resize</span><span class="p">,</span> <span class="n">convertCmd</span><span class="p">,</span> <span class="s1">&#39;-quality&#39;</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">srcImageFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">]</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/convert&#39;</span><span class="p">,</span> <span class="s1">&#39;-resize&#39;</span><span class="p">,</span> <span class="n">resize</span><span class="p">,</span> <span class="s1">&#39;-quality&#39;</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">srcImageFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">]</span>
+    
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">if</span> <span class="n">convertCmd</span><span class="p">:</span>
+            
+            <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/convert&#39;</span><span class="p">,</span>  <span class="n">convertCmd</span><span class="p">,</span> <span class="s1">&#39;-quality&#39;</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">srcImageFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">]</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/convert&#39;</span><span class="p">,</span>  <span class="s1">&#39;-quality&#39;</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">srcImageFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">]</span>
+
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmdL</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">][</span><span class="s1">&#39;dissolve&#39;</span><span class="p">]:</span>
+            
+        <span class="c1"># Resize the original images</span>
+        <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/convert&#39;</span><span class="p">,</span> <span class="s1">&#39;-resize&#39;</span><span class="p">,</span> <span class="n">resize</span><span class="p">,</span> <span class="n">srcImageFPN</span><span class="p">,</span> <span class="n">tempFPN</span><span class="p">]</span>
+        
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmdL</span><span class="p">)</span>
+        
+        <span class="c1"># composite the old and new image with the dissolve set</span>
+        <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/composite&#39;</span><span class="p">,</span> <span class="s1">&#39;-dissolve&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">][</span><span class="s1">&#39;dissolve&#39;</span><span class="p">]),</span>  <span class="n">tempFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">];</span>
+    
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmdL</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">][</span><span class="s1">&#39;alpha&#39;</span><span class="p">]:</span>
+        
+        <span class="k">pass</span>
+        <span class="c1"># Not yet implemented</span>
+        
+    <span class="k">if</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">][</span><span class="s1">&#39;emboss&#39;</span><span class="p">]:</span>
+        
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dstFullFPN</span><span class="p">)</span>
+  
+        <span class="c1"># get width and height</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">width</span>
+        
+        <span class="n">h</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">height</span>
+
+        <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/convert&#39;</span><span class="p">,</span> <span class="s1">&#39;-size&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">x</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">),</span> <span class="s1">&#39;xc:none&#39;</span><span class="p">,]</span>
+        
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">][</span><span class="s1">&#39;watermark&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="n">cmdL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">k</span> <span class="p">)</span>
+            <span class="n">cmdL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">v</span> <span class="p">)</span>
+            
+        <span class="n">cmdL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">tempFPN</span> <span class="p">)</span>
+
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmdL</span><span class="p">)</span>
+         
+        <span class="c1"># Composite the embossed text and the fixed image </span>
+        <span class="n">cmdL</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/usr/local/bin/composite&#39;</span><span class="p">,</span>  <span class="n">tempFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">];</span>
+        
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmdL</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="FigClass"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.FigClass">[docs]</a><span class="k">def</span> <span class="nf">FigClass</span><span class="p">(</span><span class="n">pD</span><span class="p">,</span> <span class="n">jsonFPN</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Process figures (images, photos) using ImageMagick</span>
+<span class="sd">    </span>
+<span class="sd">        :param pD: parameters for creating jekyll album</span>
+<span class="sd">        :type pD: dict</span>
+<span class="sd">        </span>
+<span class="sd">        :param jsonFPN: path to json parameter file</span>
+<span class="sd">        :type jsonFPN: str</span>
+<span class="sd">        </span>
+<span class="sd">        :return bodyL: markdown body text</span>
+<span class="sd">        :rtype bodyL: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">srcFP</span><span class="p">,</span> <span class="n">rollName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">jsonFPN</span><span class="p">)</span>
+    
+    <span class="n">rollName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">rollName</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">bodyL</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="n">heading1</span> <span class="o">=</span> <span class="s1">&#39;#### </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="s1">&#39;description&#39;</span><span class="p">])</span>
+    
+    <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">heading1</span><span class="p">)</span>
+    
+    <span class="n">who</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span> <span class="s1">&#39;**Who:**&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="s1">&#39;persons&#39;</span><span class="p">])</span> <span class="p">)</span>
+    
+    <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">who</span><span class="p">)</span>
+    
+    <span class="n">where</span> <span class="o">=</span> <span class="s1">&#39;**Where :** </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span><span class="p">(</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;location&#39;</span><span class="p">],</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;country&#39;</span><span class="p">])</span>
+    
+    <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">where</span><span class="p">)</span>
+    
+    <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Mouse over the images to highlight, click to see larger pop-up images.&#39;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;publication&#39;</span><span class="p">][</span><span class="s1">&#39;figclass&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;single&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;NA&#39;</span><span class="p">,</span> <span class="s1">&#39;na&#39;</span><span class="p">]:</span>
+        <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;figure&gt;&#39;</span><span class="p">)</span>
+        
+    <span class="k">elif</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;publication&#39;</span><span class="p">][</span><span class="s1">&#39;figclass&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;half&#39;</span><span class="p">:</span>
+        <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;figure class=&#39;half&#39;&gt;&quot;</span><span class="p">)</span>
+        
+    <span class="k">elif</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;publication&#39;</span><span class="p">][</span><span class="s1">&#39;figclass&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;third&#39;</span><span class="p">:</span>
+        <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;figure class=&#39;third&#39;&gt;&quot;</span><span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;unknown figclass&#39;</span><span class="p">)</span>
+        
+    <span class="c1"># Create target folder</span>
+    <span class="n">tarFP</span> <span class="o">=</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;publication&#39;</span><span class="p">][</span><span class="s1">&#39;dstfp&#39;</span><span class="p">]</span>
+            
+    <span class="n">photoFP</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tarFP</span><span class="p">,</span><span class="s1">&#39;photos&#39;</span><span class="p">)</span>
+        
+    <span class="n">rollFP</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">photoFP</span><span class="p">,</span><span class="n">rollName</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">rollFP</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rollFP</span><span class="p">)</span>
+            
+    <span class="c1"># Get the list of images</span>
+    <span class="n">listFPN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;media&#39;</span><span class="p">][</span><span class="s1">&#39;srcfp&#39;</span><span class="p">],</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;media&#39;</span><span class="p">][</span><span class="s1">&#39;listfn&#39;</span><span class="p">])</span>
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">listFPN</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            
+        <span class="n">srcImageFPN</span> <span class="o">=</span> <span class="n">file</span>
+        
+        <span class="n">FN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="n">dstFullFN</span> <span class="o">=</span> <span class="n">dstPageFN</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">rollName</span><span class="p">,</span> 
+                                              <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;suffix&#39;</span><span class="p">],</span> 
+                                              <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">FN</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> 
+                                              <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">][</span><span class="s1">&#39;kind&#39;</span><span class="p">])</span>
+        
+        <span class="n">dstjsonMetaFN</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">.json&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">rollName</span><span class="p">,</span> 
+                                            <span class="s1">&#39;meta&#39;</span><span class="p">,</span>
+                                              <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">FN</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+  
+        
+        <span class="n">dstFullFPN</span> <span class="o">=</span> <span class="n">dstPageFPN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rollFP</span><span class="p">,</span><span class="n">dstFullFN</span><span class="p">)</span>
+        
+        <span class="n">dstjsonMetaFPN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rollFP</span><span class="p">,</span><span class="n">dstjsonMetaFN</span><span class="p">)</span>
+        
+        <span class="c1"># Get the image meta data</span>
+        <span class="n">metaD</span> <span class="o">=</span> <span class="n">GetImageMeta</span><span class="p">(</span><span class="n">srcImageFPN</span><span class="p">,</span><span class="n">dstjsonMetaFPN</span><span class="p">)</span>
+        
+        <span class="n">tempPFN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rollFP</span><span class="p">,</span><span class="s1">&#39;temp.png&#39;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dstFullFPN</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;overwrite&#39;</span><span class="p">]:</span>
+        
+            <span class="n">MagickConvertFull</span><span class="p">(</span><span class="n">pD</span><span class="p">,</span><span class="n">srcImageFPN</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">,</span><span class="n">tempPFN</span><span class="p">)</span>
+               
+        <span class="k">if</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;urlimages&#39;</span><span class="p">]:</span>
+            
+            <span class="n">dstPageFN</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">rollName</span><span class="p">,</span> 
+                                        <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;suffix&#39;</span><span class="p">],</span>
+                                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">FN</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                                        <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;inpageimages&#39;</span><span class="p">][</span><span class="s1">&#39;kind&#39;</span><span class="p">])</span>
+            
+            <span class="n">dstPageFPN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rollFP</span><span class="p">,</span><span class="n">dstPageFN</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dstPageFPN</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;overwrite&#39;</span><span class="p">]:</span>
+            
+                <span class="n">MagickConvertPage</span><span class="p">(</span><span class="n">pD</span><span class="p">,</span> <span class="n">dstFullFPN</span><span class="p">,</span> <span class="n">dstPageFPN</span><span class="p">)</span>
+
+        <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;a href=&quot;../../photos/</span><span class="si">%(fp)s</span><span class="s1">/</span><span class="si">%(fullfn)s</span><span class="s1">&quot;&gt;&lt;img src=&quot;../../photos/</span><span class="si">%(fp)s</span><span class="s1">/</span><span class="si">%(qlfn)s</span><span class="s1">&quot; alt=&quot;image&quot;&gt;&lt;/a&gt;&#39;</span> <span class="o">%</span><span class="p">{</span><span class="s1">&#39;fp&#39;</span><span class="p">:</span><span class="n">rollName</span><span class="p">,</span> <span class="s1">&#39;fullfn&#39;</span><span class="p">:</span><span class="n">dstFullFN</span><span class="p">,</span> <span class="s1">&#39;qlfn&#39;</span><span class="p">:</span><span class="n">dstPageFN</span><span class="p">})</span>       
+
+        <span class="c1">#bodyL.append(&#39;&lt;a href=&quot;../../photos/%(fp)s/%(jsonfn)s&quot;&gt;%(meta)s&lt;/a&gt;&#39; %{&#39;fp&#39;:rollName, &#39;jsonfn&#39;:dstjsonMetaFN, &#39;meta&#39;:metaD[&#39;DateTime&#39;]})       </span>
+
+    <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;figcaption&gt;</span><span class="si">%s</span><span class="s2">&lt;/figcaption&gt;&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="s1">&#39;figcaption&#39;</span><span class="p">]))</span>
+    
+    <span class="n">bodyL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;/figure&gt;&quot;</span><span class="p">)</span>  
+      
+    <span class="k">return</span> <span class="n">bodyL</span></div>
+
+<div class="viewcode-block" id="WritePost"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.WritePost">[docs]</a><span class="k">def</span> <span class="nf">WritePost</span><span class="p">(</span><span class="n">pD</span><span class="p">,</span> <span class="n">jsonFPN</span><span class="p">,</span> <span class="n">yamlL</span><span class="p">,</span> <span class="n">bodyL</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Write the album post as a markdown file</span>
+<span class="sd">    </span>
+<span class="sd">        :param pD: parameters for creating jekyll album</span>
+<span class="sd">        :type pD: dict</span>
+<span class="sd">        </span>
+<span class="sd">        :param jsonFPN: path to json parameter file</span>
+<span class="sd">        :type jsonFPN: str</span>
+<span class="sd">        </span>
+<span class="sd">        :param yamlL: markdown yaml text lines</span>
+<span class="sd">        :type pD: list</span>
+<span class="sd">        </span>
+<span class="sd">        :param bodyL: markdown body text lines</span>
+<span class="sd">        :type bodyL: list</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">yamlDate</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(y)s</span><span class="s1">-</span><span class="si">%(m)s</span><span class="s1">-</span><span class="si">%(d)s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> 
+                                     <span class="s1">&#39;m&#39;</span><span class="p">:</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span>
+                                     <span class="s1">&#39;d&#39;</span><span class="p">:</span><span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]}</span>
+
+    <span class="n">year</span> <span class="o">=</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+    
+    <span class="n">rollName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">jsonFPN</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">rollName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">rollName</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Create target folder</span>
+    <span class="n">tarFP</span> <span class="o">=</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;publication&#39;</span><span class="p">][</span><span class="s1">&#39;dstfp&#39;</span><span class="p">]</span>
+        
+    <span class="n">yearFP</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tarFP</span><span class="p">,</span><span class="s1">&#39;_posts&#39;</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">yearFP</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">yearFP</span><span class="p">)</span>
+        
+    <span class="n">postFN</span> <span class="o">=</span>  <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">.md&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">yamlDate</span><span class="p">,</span> <span class="n">rollName</span><span class="p">)</span>
+    
+    <span class="n">postFPN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">yearFP</span><span class="p">,</span> <span class="n">postFN</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">postFPN</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pD</span><span class="p">[</span><span class="s1">&#39;overwrite&#39;</span><span class="p">]:</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">postFPN</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">yamlL</span><span class="p">:</span>
+    
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">bodyL</span><span class="p">:</span>
+        
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                        
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="PilotJekyllAlbum"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.PilotJekyllAlbum">[docs]</a><span class="k">def</span> <span class="nf">PilotJekyllAlbum</span><span class="p">(</span><span class="n">jsonFPN</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create Jekyll photo album from json command file</span>
+
+<span class="sd">        :param jsonFPN: path to xml file</span>
+<span class="sd">           :type jsonFPN: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Parse the json file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">jsonFPN</span><span class="p">)</span> <span class="k">as</span> <span class="n">jsonF</span><span class="p">:</span>
+    
+        <span class="n">pD</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jsonF</span><span class="p">)</span>
+  
+    <span class="c1"># Create the Jekyll Yaml    </span>
+    <span class="n">yamlL</span> <span class="o">=</span> <span class="n">JekyllYaml</span><span class="p">(</span><span class="n">pD</span><span class="p">)</span>
+         
+    <span class="c1"># Create the markdown      </span>
+    <span class="n">bodyL</span> <span class="o">=</span> <span class="n">FigClass</span><span class="p">(</span><span class="n">pD</span><span class="p">,</span> <span class="n">jsonFPN</span><span class="p">)</span>
+    
+    <span class="n">WritePost</span><span class="p">(</span><span class="n">pD</span><span class="p">,</span> <span class="n">jsonFPN</span><span class="p">,</span> <span class="n">yamlL</span><span class="p">,</span> <span class="n">bodyL</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="SetupProcesses"><a class="viewcode-back" href="../jekyllalbum.html#jekyllalbum.SetupProcesses">[docs]</a><span class="k">def</span> <span class="nf">SetupProcesses</span><span class="p">(</span><span class="n">docpath</span><span class="p">,</span> <span class="n">projFN</span><span class="p">):</span>   
+    <span class="sd">&#39;&#39;&#39;Setup and loop processes</span>
+<span class="sd">    </span>
+<span class="sd">    :paramn docpath: path to text file </span>
+<span class="sd">    :type: lstr</span>
+<span class="sd">            </span>
+<span class="sd">    :param projFN: project filename</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">            </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="sd">&#39;&#39;&#39; CreateParamJson creates the default json structure for running the python script, </span>
+<span class="sd">    only use it to create a backbone then edit </span>
+<span class="sd">    </span>
+<span class="sd">    CreateParamJson(docpath)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">srcFP</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span><span class="n">docpath</span><span class="p">)</span>
+
+    <span class="n">projFPN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srcFP</span><span class="p">,</span><span class="n">projFN</span><span class="p">)</span>
+
+    <span class="c1"># Get the full path to the project text file</span>
+    <span class="n">dirPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">projFPN</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">projFPN</span><span class="p">):</span>
+
+        <span class="n">exitstr</span> <span class="o">=</span> <span class="s1">&#39;EXITING, project file missing: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">projFPN</span><span class="p">)</span>
+
+        <span class="n">exit</span><span class="p">(</span> <span class="n">exitstr</span> <span class="p">)</span>
+
+    <span class="n">infostr</span> <span class="o">=</span> <span class="s1">&#39;Processing </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">projFPN</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="p">(</span><span class="n">infostr</span><span class="p">)</span>
+
+    <span class="c1"># Open and read the text file linking to all json files defining the project</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">projFPN</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+
+        <span class="n">jsonL</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+    <span class="c1"># Clean the list of json objects from comments and whithespace etc</span>
+    <span class="n">jsonL</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirPath</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">jsonL</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">]</span>
+
+    <span class="c1">#Loop over all json files and create Schemas and Tables</span>
+    <span class="k">for</span> <span class="n">jsonObj</span> <span class="ow">in</span> <span class="n">jsonL</span><span class="p">:</span>
+        
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;jsonObj:&#39;</span><span class="p">,</span> <span class="n">jsonObj</span><span class="p">)</span>
+                                
+        <span class="n">PilotJekyllAlbum</span><span class="p">(</span><span class="n">jsonObj</span><span class="p">)</span></div>
+        
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">docpath</span> <span class="o">=</span> <span class="s2">&quot;/Volumes/karttur/bilder/se&quot;</span>
+    
+    <span class="n">projFN</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;jekyllalbums_se.txt&quot;</span><span class="p">)</span>
+    
+    <span class="n">SetupProcesses</span><span class="p">(</span><span class="n">docpath</span><span class="p">,</span> <span class="n">projFN</span><span class="p">)</span>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Thomas Gumbricht
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

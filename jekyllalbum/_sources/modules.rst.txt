@@ -1,0 +1,7 @@
+jekyllalbum
+===========
+
+.. toctree::
+   :maxdepth: 4
+
+   jekyllalbum

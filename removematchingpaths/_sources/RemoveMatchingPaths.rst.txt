@@ -1,0 +1,7 @@
+RemoveMatchingPaths module
+==========================
+
+.. automodule:: RemoveMatchingPaths
+   :members:
+   :undoc-members:
+   :show-inheritance:
